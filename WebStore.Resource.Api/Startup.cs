@@ -1,35 +1,27 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebStore.Auth.Api.Models;
 using WebStore.Auth.Common;
 
-namespace WebStore.Auth.Api
+namespace WebStore.Resource.Api
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = this.Configuration.GetConnectionString("DefaultConnection");
-
-            services.AddDbContext<StoreDbContext>(options =>
-                options.UseSqlServer(connection));
-
             services.AddControllers();
 
-            var authOptionsConfiguration = Configuration.GetSection("Auth");
-            services.Configure<AuthOptions>(authOptionsConfiguration);
+            var authOptions = Configuration.GetSection("Auth").Get<AuthOptions>();
 
             services.AddCors(options =>
             {
@@ -49,8 +41,6 @@ namespace WebStore.Auth.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
