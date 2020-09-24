@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WebStore.Auth.Common\WebStore.Auth.Common.csproj" />
+    <ProjectReference Include="..\WebStore.Domain.Core\WebStore.Domain.Core.csproj" />
   </ItemGroup>
 
 

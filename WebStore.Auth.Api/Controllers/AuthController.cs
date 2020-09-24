@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WebStore.Auth.Api.Models;
 using WebStore.Auth.Common;
+using WebStore.Domain.Core.Models;
 
 namespace WebStore.Auth.Api.Controllers
 {
@@ -58,20 +59,19 @@ namespace WebStore.Auth.Api.Controllers
             var claims = new List<Claim>()
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, user.AccountId.ToString())
             };
 
-            foreach (var role in user.Roles)
-            {
-                claims.Add(new Claim("role", role.ToString()));
-            }
+            var role = _context.Roles.Find(user.RoleId).Name;
+
+            claims.Add(new Claim("role", role.ToString()));
 
             var token = new JwtSecurityToken(
-                authParams.Issuer,
-                authParams.Audience,
-                claims,
-                expires: DateTime.Now.AddSeconds(authParams.TokenLifetime),
-                signingCredentials: credentials);
+            authParams.Issuer,
+            authParams.Audience,
+            claims,
+            expires: DateTime.Now.AddSeconds(authParams.TokenLifetime),
+            signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

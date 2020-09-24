@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using WebStore.Auth.Api.Models;
+using WebStore.Domain.Core.Models;
 
 namespace WebStore.Auth.Api.Extensions
 {
@@ -8,13 +8,23 @@ namespace WebStore.Auth.Api.Extensions
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
+            var admin = new Role
+            {
+                RoleId = 1,
+                Name = "Admin"
+            };
+
+            modelBuilder.Entity<Role>().HasData(
+                admin
+            );
+
             modelBuilder.Entity<Account>().HasData(
                 new Account
                 {
-                    Id = Guid.NewGuid(),
+                    AccountId = Guid.NewGuid(),
                     Email = "admin@email.com",
                     Password = "admin",
-                    Roles = new Role[] {Role.Admin}
+                    RoleId = admin.RoleId
                 }
             );
         }
