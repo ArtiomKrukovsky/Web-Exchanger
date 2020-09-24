@@ -26,17 +26,18 @@ namespace WebStore.Auth.Api.Controllers
         {
             var user = AuthenticateUser(request.Email, request.Password);
 
-            if (user != null)
+            if (user == null)
             {
-                var token = GenerateJWT(user);
-
-                return Ok(new
-                {
-                    access_token = token
-                });
+                return Unauthorized();
             }
 
-            return Unauthorized();
+            var token = GenerateJWT(user);
+
+            return Ok(new
+            {
+                access_token = token
+            });
+
         }
 
         private Account AuthenticateUser(string email, string password)

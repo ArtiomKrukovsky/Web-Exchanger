@@ -5,13 +5,6 @@ namespace WebStore.Auth.Api.Models
 {
     public class StoreDbContext : DbContext
     {
-        private const string connectionString = "Server=EPBYGROW0118;Database=NorthwindDBCore;Trusted_Connection=True;";
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(connectionString);
-        }
-
         public DbSet<Account> Accounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
