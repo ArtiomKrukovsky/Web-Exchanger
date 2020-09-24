@@ -4,8 +4,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WebStore.Auth.Api.Models;
+using WebStore.Auth.Common;
 
 namespace WebStore.Auth.Api.Controllers
 {
@@ -14,10 +16,12 @@ namespace WebStore.Auth.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly StoreDbContext _context;
+        private readonly IOptions<AuthOptions> _authOptions;
 
-        public AuthController(StoreDbContext context)
+        public AuthController(StoreDbContext context, IOptions<AuthOptions> authOptions)
         {
             _context = context;
+            _authOptions = authOptions;
         }
 
         [Route("login")]
@@ -37,7 +41,6 @@ namespace WebStore.Auth.Api.Controllers
             {
                 access_token = token
             });
-
         }
 
         private Account AuthenticateUser(string email, string password)

@@ -18,5 +18,9 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebStore.Auth.Common\WebStore.Auth.Common.csproj" />
+  </ItemGroup>
+
 
 </Project>
